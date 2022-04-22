@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 
 import {
+  Alert,
   StyleSheet,
   View
 }
@@ -16,8 +17,22 @@ export function Home() {
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
-
   function handleAddTask(newTaskTitle: string) {
+
+    const taskTitleAlreadyTaken = tasks.find((task) => task.title === newTaskTitle);
+
+    if (taskTitleAlreadyTaken) {
+
+      Alert.alert(
+        "Task já cadastrada!",
+        "Você não pode cadastrar uma task com o mesmo nome",
+        [
+          { text: "OK" }
+        ]
+      );
+      
+      return;
+    }
 
     const date = new Date().getTime();
 
@@ -53,6 +68,8 @@ export function Home() {
 
   return (
     <View style={styles.container}>
+
+
       <Header tasksCounter={tasks.length} />
 
       <TodoInput addTask={handleAddTask} />
